@@ -1,0 +1,24 @@
+.container {
+    position: sticky;
+    top: 30px;
+}
+
+.list {
+    list-style-type: none;
+}
+
+.user{
+    display:flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.image{
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.name {
+    font-weight: 500;
+}
