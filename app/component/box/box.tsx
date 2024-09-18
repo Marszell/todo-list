@@ -13,6 +13,7 @@ export default function Box () {
                 <span>13/11/2024</span>
             </div>
             <div className={styles.buttons}>
+                <button className={`${styles.button} ${styles.mark}`}>Incomplete</button>
                 <button className={`${styles.button} ${styles.view}`}>View</button>
                 <button className={`${styles.button} ${styles.delete}`}>Delete</button>
             </div>

@@ -36,11 +36,9 @@ export default function Sidebar(){
                         </li>
                     ))}
                 </ul>
-                <div className={styles.logout}>
-                    <button className={styles.button}>
-                        <MdLogout />Logout
-                    </button>
-                </div>
+                <button className={styles.logout}>
+                    <MdLogout />Logout
+                </button>
             </div>
         </div>
     )
