@@ -1,6 +1,8 @@
 import {
     MdDashboard,
     MdLogout,
+    MdAssignment,
+    MdChecklistRtl,
 } from "react-icons/md";
 import styles from "./sidebar.module.css"
 import MenuLink from "./menuLink/menuLink"
@@ -15,6 +17,16 @@ const menuItems = [
                 path: "",
                 icon : <MdDashboard />,
             },
+            {
+                title : "Incomplete",
+                path :"/incomplete",
+                icon : <MdAssignment />,
+            },
+            {
+                title : "Complete",
+                path:"/completed",
+                icon : <MdChecklistRtl />,
+            }
         ],
     },
 ];

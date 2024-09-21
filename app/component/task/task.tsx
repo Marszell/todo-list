@@ -1,7 +1,15 @@
-import styles from "./box.module.css"
+"use client"
+import { useState } from 'react';
+import styles from "./task.module.css";
 
-export default function Box () {
-    return(
+export default function Task() {
+    const [isClicked, setIsClicked] = useState(false);
+
+    const handleClick = () => {
+        setIsClicked(!isClicked);
+    };
+
+    return (
         <div className={styles.wrapper}>
             <div className={styles.content}>
                 <span>content</span>
@@ -13,10 +21,15 @@ export default function Box () {
                 <span>13/11/2024</span>
             </div>
             <div className={styles.buttons}>
-                <button className={`${styles.button} ${styles.mark}`}>Incomplete</button>
+                <button
+                    className={`${styles.button} ${isClicked ? styles.complete : styles.mark}`}
+                    onClick={handleClick}
+                >
+                    {isClicked ? 'Complete' : 'Incomplete'}
+                </button>
                 <button className={`${styles.button} ${styles.view}`}>View</button>
                 <button className={`${styles.button} ${styles.delete}`}>Delete</button>
             </div>
         </div>
-    )
+    );
 }

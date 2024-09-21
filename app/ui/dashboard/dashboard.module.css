@@ -12,3 +12,26 @@
     flex: 5;
     padding: 20px;
 }
+
+.page {
+    display: flex;
+    width: auto;
+    border: 2px solid ;
+    border-color: silver;
+    border-radius: 1rem;
+    background-color: #262424;
+    gap: 10px;
+    padding: 20px;
+    flex-direction: column;
+}
+
+.title {
+    display: inline-block;
+}
+.task {
+    gap: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
