@@ -17,16 +17,16 @@ const menuItems = [
                 path: "",
                 icon : <MdDashboard />,
             },
-            {
-                title : "Incomplete",
-                path :"/incomplete",
-                icon : <MdAssignment />,
-            },
-            {
-                title : "Complete",
-                path:"/completed",
-                icon : <MdChecklistRtl />,
-            }
+            // {
+            //     title : "Incomplete",
+            //     path :"/incomplete",
+            //     icon : <MdAssignment />,
+            // },
+            // {
+            //     title : "Complete",
+            //     path:"/completed",
+            //     icon : <MdChecklistRtl />,
+            // }
         ],
     },
 ];
