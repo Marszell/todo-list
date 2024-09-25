@@ -7,9 +7,9 @@ export default function Dashboard() {
   return (
     <div className={styles.page}>
         <h3 className={styles.title}>All Task</h3>
-        <div>
+        <div className={styles.create}>
             <Link href="/create">
-                <button>
+                <button className={styles.button}>
                     create
                 </button>
             </Link>
