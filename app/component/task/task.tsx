@@ -1,6 +1,6 @@
 "use client"
 import { useState } from 'react';
-import styles from "./task.module.css";
+import styles from "../../ui/dashboard/task/task.module.css";
 
 export default function Task() {
     const [isClicked, setIsClicked] = useState(false);
