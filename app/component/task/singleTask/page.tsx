@@ -1,4 +1,4 @@
-import styles from "../../ui/dashboard/task/singleTask/singleTask.module.css";
+import styles from "../../../ui/dashboard/task/singleTask/singleTask.module.css";
 
 export default function SingleTaskPage (){
     return(
