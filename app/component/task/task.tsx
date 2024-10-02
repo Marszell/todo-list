@@ -1,6 +1,7 @@
 "use client"
 import { useState } from 'react';
 import styles from "../../ui/dashboard/task/task.module.css";
+import Link from "next/link";
 
 export default function Task() {
     const [isClicked, setIsClicked] = useState(false);
@@ -27,7 +28,9 @@ export default function Task() {
                 >
                     {isClicked ? 'Complete' : 'Incomplete'}
                 </button>
-                <button className={`${styles.button} ${styles.view}`}>View</button>
+                <Link href="/component/task/singleTask">
+                    <button className={`${styles.button} ${styles.view}`}>View</button>
+                </Link>
                 <button className={`${styles.button} ${styles.delete}`}>Delete</button>
             </div>
         </div>
