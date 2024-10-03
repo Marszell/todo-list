@@ -14,7 +14,7 @@ const menuItems = [
         list : [
             {
                 title : "All-Task",
-                path: "",
+                path: "/",
                 icon : <MdDashboard />,
             },
             // {
