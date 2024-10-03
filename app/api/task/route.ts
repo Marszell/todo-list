@@ -1,15 +1,16 @@
 import {NextResponse} from "next/server";
-import {validate} from "json-schema";
+import {TodoFormSchema} from "../../lib/Validations";
 
-const CreateTodo =
+const CreateTodo = TodoFormSchema.omit({id:true})
 export async function POST (request: Request) {
     try{
         const formData = await request.formData()
+        const validated = CreateTodo.safeParse({
+            title: formData.get("title")
+        })
 
-        const validated =
-
-        if(!title){
-            return NextResponse.json({error: "Missing title"},{status:400});
+        if(!validated.success) {
+            return NextResponse.json({message:"Failled Created Todo", data:{}, error: validated.error.flatten().fieldErrors},{status:400});
         }
     } catch (error) {
         console.error(error);
