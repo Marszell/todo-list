@@ -8,26 +8,16 @@ import toast from "react-hot-toast";
 import * as Yup from "yup";
 
 
-export default function Create({isCreated,id}) {
+export default function Create() {
     const[formData, setFormData] = useState({})
 
-    const initialValues = {
-        title: formData["title"] ?? "",
-        description: formData["description"] ?? "",
-    }
-
-    const onSubmit = (values) => {
+    const onSubmit = async (values) => {
         try {
             const formData = new FormData();
             for (let value in values) {
                 formData.append(value, values[value]);
             }
-            let response;
-            if (!isCreated) {
-                response = await axios.put(`/api/task/${id}`, formData)
-            }else{
-                response = await axios.post("/api/task/", formData)
-            }
+            let response = await axios.post("/api/task/", formData)
 
             if(response.status === 201 || response.status === 200) {
                 // navigate("/")
@@ -38,6 +28,10 @@ export default function Create({isCreated,id}) {
         } catch (error) {
             toast.error(error.response.data.message);
         }
+    }
+    const initialValues = {
+        title: formData["title"] ?? "",
+        description: formData["description"] ?? "",
     }
 
     const AddOrUpdateSchema = Yup.object().shape({
@@ -51,15 +45,25 @@ export default function Create({isCreated,id}) {
             onSubmit={onSubmit}
             validationSchema={AddOrUpdateSchema}
         >
-            <div className={styles.container}>
-                <form action="" className={styles.form}>
-                    <Field type="text" name="title" placeholder={"title"}/>
-                    {/*<input type="text" placeholder={"Title"} name={"title"} />*/}
-                    <Field type="text" name="description" placeholder={"description"}/>
-                    {/*<input type="text" placeholder={"Description"}/>*/}
-                    <button className={styles.button}>Submit</button>
-                </form>
-            </div>
+            {({
+                handleSubmit,
+                errors,
+                touched
+            }) =>(
+                <div className={styles.container}>
+                    <form action="" className={styles.form} onSubmit={handleSubmit}>
+                        <Field type="text" name="title" placeholder={"title"}/>
+                        {errors.title && touched.title ? (
+                            <div className="text-bg-danger border border-red-400 text-red-700 px-4 py-2 rounded relative"
+                                role="alert">
+                                <strong className="font-bold">{errors.title}</strong>
+                            </div>
+                        ) : null}
+                        <Field type="text" name="description" placeholder={"description"}/>
+                        <button className={styles.button}>Submit</button>
+                    </form>
+                </div>
+            )}
         </Formik>
     )
 }
