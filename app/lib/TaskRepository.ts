@@ -7,3 +7,10 @@ export async function fetchTask(): Promise<any[]> {
         }
     })
 }
+
+export async function create(data:any): Promise<any> {
+    await prisma.todo.create({
+        data:data
+    });
+}
+
