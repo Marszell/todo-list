@@ -2,11 +2,9 @@
 
 import styles from "/app/ui/dashboard/create/create.module.css";
 import { Field, Formik } from "formik";
-import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import * as Yup from "yup";
-import { redirect } from "next/navigation";
 import {navigate} from "./action";
 
 export default function Create() {
@@ -22,12 +20,12 @@ export default function Create() {
 
             if (response.status === 201 || response.status === 200) {
                 navigate('/')
-                toast.success("Task successfully created");
+                toast.success("Task successfully created")
             } else {
-                toast.error("Error");
+                toast.error("Error")
             }
         } catch (error) {
-            toast.error(error.response.data.message);
+            toast.error(error.response.data.message)
         }
     };
 
