@@ -1,13 +1,33 @@
 import { NextResponse } from "next/server";
-import { create } from "../../lib/TaskRepository";
+import {create, fetchTask} from "../../lib/TaskRepository";
 import { TodoFormSchema } from "../../lib/Validations";
 import prisma from "../../lib/prisma";
 
 // Mengubah BigInt ke string agar dapat dikonversi menjadi JSON
 BigInt.prototype.toJSON = function() { return this.toString(); }
 
-const CreateTodo = TodoFormSchema.omit({ id: true });
+// export async function GET (request: Request): Promise<any> {
+//     try{
+//         const id = parseInt(params.id)
+//         const task = await fetchTask(id)
+//         return NextResponse.json({message:"", data: task, error:{} }, { status: 200 });
+//     }catch(error){
+//         return NextResponse.json({message:error.message, data: {}, error: error }, { status: 500 });
+//     }
+// }
+export async function GET(request: Request): Promise<any> {
+    try{
+        const url = new URL(request.url);
+        const searchParams = new URLSearchParams(url.search);
+        const taskParam = searchParams.get("complete");
+        const task = await fetchTask(taskParam ?? "");
+        return NextResponse.json({message:"", data: task, error:{} }, { status: 200 });
+    }catch (error){
+        return NextResponse.json({ message:error.message, data: {}, error: error }, { status: 500 });
+    }
+}
 
+const CreateTodo = TodoFormSchema.omit({ id: true });
 export async function POST(request: Request): Promise<NextResponse> {
     try {
         const formData = await request.formData();

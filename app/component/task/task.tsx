@@ -1,9 +1,10 @@
 "use client"
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import styles from "../../ui/dashboard/task/task.module.css";
 import Link from "next/link";
+import axios from "axios";
 
-export default function Task() {
+export default function Task({title, desc, completed, date }) {
     const [isClicked, setIsClicked] = useState(false);
 
     const handleClick = () => {
@@ -13,13 +14,13 @@ export default function Task() {
     return (
         <div className={styles.wrapper}>
             <div className={styles.content}>
-                <span>content</span>
+                <span>{title}</span>
             </div>
             <div className={styles.description}>
-                <span>description</span>
+                <span>{desc}</span>
             </div>
             <div className={styles.date}>
-                <span>13/11/2024</span>
+                <span>{date}</span>
             </div>
             <div className={styles.buttons}>
                 <button
