@@ -14,3 +14,20 @@ export async function create(data:any): Promise<any> {
     });
 }
 
+export async function update(id: number, data:any): Promise<any> {
+    return prisma.todo.update({
+        where:{
+            id: id
+        },
+        data:data
+    });
+}
+
+export async function fetchTaskByBool(complete: boolean): Promise<any> {
+    return prisma.todo.findMany({
+        where:{
+            complete:true,
+            deleted_at: null
+        }
+    })
+}

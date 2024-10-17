@@ -1,6 +1,7 @@
 import {NextResponse} from "next/server";
-import {fetchTask} from "../../../lib/TaskRepository";
+import {fetchTask, update} from "../../../lib/TaskRepository";
 import {TodoFormSchema} from "../../../lib/Validations";
+import prisma from "../../../lib/prisma";
 
 export async function GET (request: Request, {params}): Promise<NextResponse> {
     try{
@@ -37,6 +38,29 @@ export async function PUT (request: Request, {params}): Promise<NextResponse> {
                 form[key] = value;
             }
         }
+
+        let user = await prisma.user.findUnique({
+            where: { id: "1" },
+        });
+
+        if (!user) {
+            user = await prisma.user.create({
+                data: {
+                    id: "1",
+                    name: "jhon", // Add other required fields
+                    email:"jhon@gmail.com",
+                    password: "jhon123",
+                },
+            });
+        }
+
+        await update({
+            ...form,
+            users:{
+                connect: { id: user.id.toString() },
+            },
+        });
+
         return NextResponse.json({message:"Success", data: {}, error:{} }, { status: 200 });
     }catch (error){
         return NextResponse.json({message:error.message, data:{}, error: error }, { status: 500 });
