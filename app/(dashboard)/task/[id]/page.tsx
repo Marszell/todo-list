@@ -5,15 +5,17 @@ import {Field, Formik} from "formik";
 import axios from "axios";
 import toast from "react-hot-toast";
 import * as Yup from "yup";
-import {navigate} from "../../../(dashboard)/create/action";
+import {navigate} from "../../create/action";
 import {useEffect, useState} from "react";
+import {useParams} from "next/navigation";
 
-export default function SingleTaskPage (id){
+export default function SingleTaskPage (){
+    const {id} = useParams();
     const [formData, setFormData] = useState({})
 
     useEffect(() => {
         fetchTask()
-    }, []);
+    }, [id]);
 
     const fetchTask = async () => {
         if (!id) return
@@ -61,9 +63,7 @@ export default function SingleTaskPage (id){
         <div className={styles.container}>
             <form action="" className={styles.form}>
                 <Field type="text" name="title" placeholder="Title" />
-                {/*<input type="text" placeholder={"title"}/>*/}
                 <Field type="text" name="description" placeholder="Description" />
-                {/*<input type="text" placeholder={"description"}/>*/}
                 <button className={styles.button}>Submit</button>
             </form>
         </div>
