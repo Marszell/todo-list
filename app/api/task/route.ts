@@ -15,6 +15,7 @@ BigInt.prototype.toJSON = function() { return this.toString(); }
 //         return NextResponse.json({message:error.message, data: {}, error: error }, { status: 500 });
 //     }
 // }
+
 export async function GET(request: Request): Promise<any> {
     try{
         const url = new URL(request.url);

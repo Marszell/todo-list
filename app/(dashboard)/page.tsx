@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import styles from "../ui/dashboard/dashboard.module.css";
-import Task from "../component/task/task";
+import Task from "./task/task";
 import Link from "next/link";
 import {useEffect, useState} from "react";
 import axios from "axios";
@@ -30,14 +30,12 @@ export default function Dashboard() {
             </Link>
         </div>
         <div className={styles.task}>
-            {tasks.map((task) =>(
-                <Task key={task.id} title={task.title} desc={task.description} completed={task.complete} date={task.createdAt} />
-            ))}
-            {/*<Task />*/}
-            {/*<Task />*/}
-            {/*<Task />*/}
-            {/*<Task />*/}
-            {/*<Task />*/}
+        {tasks.map((task) =>{
+            const date = new Date(task.created_at).toLocaleDateString('en-US', { timezone: 'Asia/Jakarta' });
+            return (
+                <Task key={task.id} title={task.title} desc={task.description} completed={task.complete} date={date} />
+            )
+        })}
         </div>
     </div>
   );

@@ -4,7 +4,7 @@ import styles from "../../ui/dashboard/task/task.module.css";
 import Link from "next/link";
 import axios from "axios";
 
-export default function Task({title, desc, completed, date }) {
+export default function Task({id,title, desc, completed, date }) {
     const [isClicked, setIsClicked] = useState(false);
 
     const handleClick = () => {
@@ -29,7 +29,7 @@ export default function Task({title, desc, completed, date }) {
                 >
                     {isClicked ? 'Complete' : 'Incomplete'}
                 </button>
-                <Link href="/component/task/singleTask">
+                <Link href={`/task/${id}`}>
                     <button className={`${styles.button} ${styles.view}`}>View</button>
                 </Link>
                 <button className={`${styles.button} ${styles.delete}`}>Delete</button>
