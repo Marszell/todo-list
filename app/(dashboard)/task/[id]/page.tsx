@@ -18,13 +18,29 @@ export default function SingleTaskPage (){
     }, [id]);
 
     const fetchTask = async () => {
-        if (!id) return
-        const data = await axios.get(`/api/task/${id}`)
-        setFormData({
-            title: data.data.data.title,
-            description: data.data.data.description,
-        })
-    }
+        if (!id) return;
+        try {
+            // console.log(`Fetching task with ID: ${id}`);
+            const data  = await axios.get(`/api/task/${id}`);
+            const taskData = data.data.data;
+            setFormData({
+                title: taskData.title,
+                description: taskData.description,
+            });
+            console.log("abc")
+        } catch (error) {
+            console.error("Error fetching task:", error);
+            toast.error("a");
+        }
+    };
+    // const fetchTask = async () => {
+    //     if (!id) return
+    //     const data = await axios.get(`/api/task/${id}`)
+    //     setFormData({
+    //         title: data.data.data.title,
+    //         description: data.data.data.description,
+    //     })
+    // }
 
     const onSubmit = async(values)=>{
         try{
@@ -60,13 +76,26 @@ export default function SingleTaskPage (){
             onSubmit={onSubmit}
             validationSchema={UpdatedValidation}
         >
-        <div className={styles.container}>
-            <form action="" className={styles.form}>
-                <Field type="text" name="title" placeholder="Title" />
-                <Field type="text" name="description" placeholder="Description" />
-                <button className={styles.button}>Submit</button>
-            </form>
-        </div>
-    </Formik>
+            {({
+                handleSubmit,
+                errors,
+                touched
+            }) =>(
+                <div className={styles.container}>
+                    <form action="" className={styles.form} onSubmit={handleSubmit}>
+                        <Field type="text" name="title" placeholder="Title" />
+                        {errors.title && touched.title ? (
+                            <div
+                                className="text-bg-danger border border-red-400 text-red-700 px-4 py-2 rounded relative"
+                                role="alert">
+                                <strong className="font-bold">{errors.title}</strong>
+                            </div>
+                        ): null}
+                        <Field type="text" name="description" placeholder="Description"/>
+                        <button className={styles.button} type="submit">Submit</button>
+                    </form>
+                </div>
+            )}
+        </Formik>
     )
 }
