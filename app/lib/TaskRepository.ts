@@ -8,6 +8,15 @@ export async function fetchTask(): Promise<any[]> {
     })
 }
 
+export async function fetchSingleTask(id: string): Promise<any[]> {
+    return prisma.todo.findFirst({
+        where:{
+            id:id,
+            deleted_at: null
+        }
+    });
+}
+
 export async function create(data:any): Promise<any> {
     await prisma.todo.create({
         data:data
@@ -20,6 +29,14 @@ export async function update(id: number, data:any): Promise<any> {
             id: id
         },
         data:data
+    });
+}
+
+export async function updated(id: number): Promise<any> {
+    return prisma.todo.update({
+        where:{
+            id: id
+        },
     });
 }
 

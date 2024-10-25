@@ -1,13 +1,13 @@
 import {NextResponse} from "next/server";
-import {fetchTask, update} from "../../../lib/TaskRepository";
+import {fetchSingleTask, fetchTask, update} from "../../../lib/TaskRepository";
 import {TodoFormSchema} from "../../../lib/Validations";
 import prisma from "../../../lib/prisma";
 
 export async function GET (request: Request, {params}): Promise<NextResponse> {
     try{
         const id = parseInt(params.id)
-        const task = await fetchTask(id)
-        return NextResponse.json({message:"", data: task, error:{} }, { status: 200 });
+        const task = await fetchSingleTask(id)
+        return NextResponse.json({message:"Success", data: task, error:{} }, { status: 200 });
     }catch(error){
         return NextResponse.json({message:error.message, data: {}, error: error }, { status: 500 });
     }
@@ -31,7 +31,7 @@ export async function PUT (request: Request, {params}): Promise<NextResponse> {
             }, { status: 400 });
         }
 
-        // const id = parseInt(params.id)
+        const id = parseInt(params.id)
         const form: Record<string, any> = {};
         for(const [key, value] of formData.entries()) {
             if (key !== "file") {
@@ -54,7 +54,7 @@ export async function PUT (request: Request, {params}): Promise<NextResponse> {
             });
         }
 
-        await update({
+        await update(id,{
             ...form,
             users:{
                 connect: { id: user.id.toString() },
