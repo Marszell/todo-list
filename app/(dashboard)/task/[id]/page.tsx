@@ -8,10 +8,12 @@ import * as Yup from "yup";
 import {navigate} from "../../create/action";
 import {useEffect, useState} from "react";
 import {useParams} from "next/navigation";
+import {useRouter} from "next/compat/router";
 
 export default function SingleTaskPage (){
     const {id} = useParams();
     const [formData, setFormData] = useState({})
+    const router = useRouter();
 
     useEffect(() => {
         fetchTask()
@@ -50,8 +52,8 @@ export default function SingleTaskPage (){
         }
         let response = await axios.put(`/api/task/${id}`, formData);
         if (response.status === 201 || response.status === 200) {
-            // navigate('/')
-            toast.success("Updated task successfully")
+            navigate('/')
+            toast.success("Updated task successfully");
         }else{
             toast.error("Error")
         }

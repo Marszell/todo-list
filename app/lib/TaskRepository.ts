@@ -48,3 +48,11 @@ export async function fetchTaskByBool(complete: boolean): Promise<any> {
         }
     })
 }
+
+export async function deleteTask(id: number): Promise<any> {
+    await prisma.todo.delete({
+        where:{
+            id: id
+        }
+    })
+}

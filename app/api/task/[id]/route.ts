@@ -1,7 +1,17 @@
 import {NextResponse} from "next/server";
-import {fetchSingleTask, fetchTask, update} from "../../../lib/TaskRepository";
+import {fetchSingleTask, fetchTask, update, deleteTask} from "../../../lib/TaskRepository";
 import {TodoFormSchema} from "../../../lib/Validations";
 import prisma from "../../../lib/prisma";
+
+export async function DELETE (request: Request, {params}): Promise<NextResponse> {
+    try{
+        const id = parseInt(params.id)
+        await deleteTask(id)
+        return NextResponse.json({ message: "Success", data: {}, error: {} }, { status: 200 });
+    } catch (error){
+        return NextResponse.json({ message: error.message, data: {}, error: error }, { status: 500 });
+    }
+}
 
 export async function GET (request: Request, {params}): Promise<NextResponse> {
     try{
