@@ -33,7 +33,14 @@ export default function Dashboard() {
         {tasks.map((task) =>{
             const date = new Date(task.updated_at).toLocaleDateString('en-US', { timezone: 'Asia/Jakarta' });
             return (
-                <Task id={task.id} title={task.title} desc={task.description} completed={task.complete} date={date} />
+                <Task
+                    id={task.id}
+                    title={task.title}
+                    desc={task.description}
+                    completed={task.complete}
+                    date={date}
+                    fetchTask={fetchTask}
+                />
             )
         })}
         </div>
