@@ -32,7 +32,7 @@ export default function SingleTaskPage (){
             console.log("abc")
         } catch (error) {
             console.error("Error fetching task:", error);
-            toast.error("a");
+            toast.error("Error fetching task");
         }
     };
     // const fetchTask = async () => {
