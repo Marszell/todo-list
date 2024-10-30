@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import {create, fetchTask} from "../../lib/TaskRepository";
+import {create, fetchTask, UpdateBool} from "../../lib/TaskRepository";
 import { TodoFormSchema } from "../../lib/Validations";
 import prisma from "../../lib/prisma";
 
@@ -92,3 +92,17 @@ export async function POST(request: Request): Promise<NextResponse> {
         );
     }
 }
+
+// export async function PUT(request: Request,{params}): Promise<any> {
+//     try{
+//         const formData = await request.formData();
+//         const complete = formData.get("complete") === true
+//         if (complete !== undefined){
+//             const id = parseInt(params.id);
+//             const bool = await UpdateBool(id,complete)
+//             return NextResponse.json({message:"Success", data: {}, error:{} }, { status: 200 });
+//         }
+//     }catch(error){
+//         return NextResponse.json({ message: error.message, data: {}, error: error }, { status: 500 });
+//     }
+// }

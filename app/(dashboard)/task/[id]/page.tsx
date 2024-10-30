@@ -35,15 +35,6 @@ export default function SingleTaskPage (){
             toast.error("Error fetching task");
         }
     };
-    // const fetchTask = async () => {
-    //     if (!id) return
-    //     const data = await axios.get(`/api/task/${id}`)
-    //     setFormData({
-    //         title: data.data.data.title,
-    //         description: data.data.data.description,
-    //     })
-    // }
-
     const onSubmit = async(values)=>{
         try{
         const formData = new FormData();
