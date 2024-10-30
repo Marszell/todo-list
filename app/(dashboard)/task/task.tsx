@@ -19,8 +19,27 @@ export default function Task({id,title, desc, completed, date, fetchTask }) {
             toast.error("Error deleting task");
         }
     };
-    const handleClick = () => {
-        setIsClicked(!isClicked);
+    const handleClick = async () => {
+        try{
+            const formData = new FormData();
+            formData.append("action", "complete");
+            formData.append("completed", !isClicked);
+            await axios.put(`/api/task/${id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            // await axios.put(`/api/task/${id}`, {
+            //     action:'complete',
+            //     completed:!isClicked,
+            // });
+            setIsClicked(!isClicked);
+            toast.success("Task Status updated successfully");
+            fetchTask();
+            // setIsClicked(!isClicked);
+        }catch (error){
+            toast.error("Error updated status task");
+        }
     };
 
     return (

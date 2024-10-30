@@ -9,7 +9,7 @@ export async function fetchTask(): Promise<any[]> {
 }
 
 export async function fetchSingleTask(id: string): Promise<any[]> {
-    return prisma.todo.findFirst({
+    return prisma.todo.findUnique({
         where:{
             id:id,
             deleted_at: null
@@ -55,4 +55,29 @@ export async function deleteTask(id: number): Promise<any> {
             id: id
         }
     })
+}
+
+// export async function UpdateBool(id: number, complete:boolean): Promise<any> {
+//     return prisma.todo.update({
+//         where: {
+//             id: id
+//         },
+//         data:{
+//             complete:complete
+//         }
+//     });
+// }
+export async function UpdateBool(id: number, complete: boolean): Promise<any> {
+    const todo = await prisma.todo.findUnique({
+        where: { id: id }
+    });
+
+    if (!todo) {
+        throw new Error("Todo not found");
+    }
+
+    return prisma.todo.update({
+        where: { id: id },
+        data: { complete: complete }
+    });
 }
