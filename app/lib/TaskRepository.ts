@@ -57,27 +57,26 @@ export async function deleteTask(id: number): Promise<any> {
     })
 }
 
-// export async function UpdateBool(id: number, complete:boolean): Promise<any> {
-//     return prisma.todo.update({
-//         where: {
-//             id: id
-//         },
-//         data:{
-//             complete:complete
-//         }
-//     });
-// }
-export async function UpdateBool(id: number, complete: boolean): Promise<any> {
-    const todo = await prisma.todo.findUnique({
-        where: { id: id }
-    });
-
-    if (!todo) {
-        throw new Error("Todo not found");
-    }
-
+export async function UpdateBool(id: number, complete:boolean): Promise<any> {
     return prisma.todo.update({
-        where: { id: id },
-        data: { complete: complete }
+        where: {
+            id: id
+        },
+        data:{
+            complete:complete
+        }
     });
 }
+
+// export async function UpdateBool(id: number, complete: boolean): Promise<any> {
+//     const todo = await prisma.todo.findUnique({
+//         where: { id: id }
+//     });
+//     // if (!todo) {
+//     //     throw new Error("Todo not found");
+//     // }
+//     await prisma.todo.update({
+//         where: { id: id },
+//         data: { complete: complete }
+//     });
+// }

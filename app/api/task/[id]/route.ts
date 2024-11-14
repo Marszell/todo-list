@@ -27,15 +27,19 @@ const UpdateTask = TodoFormSchema.omit({title: true})
 export async function PUT (request: Request, {params}): Promise<NextResponse> {
     try{
         const formData = await request.formData();
-
         const action = formData.get("action");
-        if(action === 'complete'){
-            const complete = formData.get("complete") === 'true';
-            if (complete !== undefined){
+
+        try {
+            if(action === 'complete'){
+                const complete = formData.get("complete") === 'true';
+                // if (complete !== undefined){
                 const id = parseInt(params.id)
                 await UpdateBool(id,complete);
                 return NextResponse.json({message:"Success", data: {}, error:{} }, { status: 200 });
+                // }
             }
+        } catch (error) {
+            return NextResponse.json({ message: error.message, data: {}, error: error }, { status: 500 });
         }
 
 
