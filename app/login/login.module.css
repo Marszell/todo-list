@@ -7,7 +7,7 @@
 }
 
 .form {
-    background-color: var(--bgSoft);
+    background-color: #3C3D37;
     padding: 50px;
     border-radius: 10px;
     width: 500px;
@@ -24,15 +24,15 @@
     padding: 30px;
     border: 2px solid #2e374a;
     border-radius: 5px;
-    background-color: var(--bg);
-    color: var(--text);
+    background-color: #697565;
+    color: #ECDFCC;
 }
 
 .form button {
     width: 100%;
     padding: 30px;
     background-color: teal;
-    color: var(--text);
+    color: #ECDFCC;
     border: none;
     cursor: pointer;
     border-radius: 5px;
