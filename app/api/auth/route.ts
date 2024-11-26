@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
-export default async function auth(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "POST") {
         const {email , password} = req.body;
         try {
