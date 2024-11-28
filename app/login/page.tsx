@@ -2,14 +2,16 @@
 import styles from './login.module.css'
 import toast, {Toaster} from "react-hot-toast";
 import axios from "axios";
-import {router} from "next/client";
+// import {router} from "next/client";
+import {useRouter} from "next/navigation";
 
 export default function LoginPage(){
+    const router = useRouter();
 
     const login = async (values) => {
         try {
             const response = await axios.post("/login", values);
-            console.log(response);
+            // console.log(response);
             if (response.status === 201 || response.status === 200) {
                 router.push("/");
             }
