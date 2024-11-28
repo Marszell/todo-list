@@ -2,7 +2,7 @@ import {fetchUserbyEmail} from "./app/lib/UserRepository";
 import NextAuth from 'next-auth';
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from 'bcrypt';
-import z from 'zod';
+import {z} from 'zod';
 import {authConfig} from "./auth.config";
 
 async function getUser(email: string): Promise<any> {
