@@ -4,6 +4,7 @@ import toast, {Toaster} from "react-hot-toast";
 import axios from "axios";
 // import {router} from "next/client";
 import {useRouter} from "next/navigation";
+import Link from "next/link";
 
 export default function LoginPage(){
     const router = useRouter();
@@ -26,7 +27,7 @@ export default function LoginPage(){
                 <h1>Login</h1>
                 {/*<span>Email</span>*/}
                 <input
-                    type="text"
+                    type="email"
                     name="email"
                     placeholder={"Email"}
                     required
@@ -38,6 +39,9 @@ export default function LoginPage(){
                     placeholder={"Password"}
                     required
                 />
+                <Link href={"/signup"}>
+                    <button>Sign Up</button>
+                </Link>
                 <button>Login</button>
             </form>
         </div>
