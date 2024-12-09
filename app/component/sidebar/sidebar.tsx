@@ -7,6 +7,8 @@ import {
 import styles from "./sidebar.module.css"
 import MenuLink from "./menuLink/menuLink"
 import Image from "next/image";
+import {auth, signOut} from "../../../auth";
+import {fetchUserbyEmail} from "../../lib/UserRepository";
 
 const menuItems = [
     {
@@ -31,12 +33,15 @@ const menuItems = [
     },
 ];
 
-export default function Sidebar(){
+export default async function  Sidebar(){
+    const session = await auth();
+    const user = await fetchUserbyEmail(session.user.email);
+
     return(
         <div className={styles.container}>
             <div className={styles.user}>
                 <Image src={"/noavatar.png"} alt={"profile"} className={styles.image} width="50" height="50"/>
-                <span className={styles.name}>name</span>
+                <span className={styles.name}>{session.user.name}</span>
             </div>
             <div className={styles.menu}>
                 <ul className={styles.list}>
@@ -48,9 +53,14 @@ export default function Sidebar(){
                         </li>
                     ))}
                 </ul>
-                <button className={styles.logout}>
-                    <MdLogout />Logout
-                </button>
+                <form action={async () =>{
+                    'use server'
+                    await signOut({redirectTo:"/login"});
+                }}>
+                    <button className={styles.logout}>
+                        <MdLogout />Logout
+                    </button>
+                </form>
             </div>
         </div>
     )
