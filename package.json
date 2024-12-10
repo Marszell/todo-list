@@ -9,12 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@next/eslint-plugin-next": "14.0.1",
     "@prisma/client": "^5.20.0",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "formik": "^2.4.6",
-    "next": "^14.2.9",
+    "next": "^14.2.20",
     "next-auth": "5.0.0-beta.25",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -32,9 +33,11 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "css-loader": "^7.1.2",
     "eslint": "^8",
     "eslint-config-next": "14.2.9",
     "prisma": "^5.20.0",
+    "style-loader": "^4.0.0",
     "typescript": "^5"
   }
 }
