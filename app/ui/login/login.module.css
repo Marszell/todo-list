@@ -28,6 +28,10 @@
     color: #ECDFCC;
 }
 
+.form a{
+    color: yellowgreen;
+}
+
 .form button {
     width: 100%;
     padding: 30px;
