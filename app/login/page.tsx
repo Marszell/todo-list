@@ -21,7 +21,6 @@ export default function LoginPage(){
             console.log(response);
             if (response.status === 201 || response.status === 200) {
                 console.log('test');
-                // window.location.href = "/";
                 router.replace('/');
             }
         }catch(error){
@@ -34,22 +33,22 @@ export default function LoginPage(){
             <Toaster position={"bottom-left"}/>
             <form action={login} className={styles.form}>
                 <h1>Login</h1>
-                {/*<span>Email</span>*/}
                 <input
                     type="email"
                     name="email"
                     placeholder={"Email"}
                     required
                 />
-                {/*<span>Password</span>*/}
                 <input
                     type="password"
                     name="password"
                     placeholder={"Password"}
                     required
                 />
+                <span>Didn't have account ? <Link href={"/signup"}>Enter here</Link> </span>
                 {/*<Link href={"/signup"}>*/}
-                {/*    <button>Sign Up</button>*/}
+                {/*    <span>Already have account ? Enter here </span>*/}
+                {/*    /!*<button>Sign Up</button>*!/*/}
                 {/*</Link>*/}
                 <button>Login</button>
             </form>
