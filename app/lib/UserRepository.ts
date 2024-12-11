@@ -11,3 +11,9 @@ export async function fetchUserbyEmail(email: string): Promise<any> {
         },
     });
 }
+
+export async function create (data: any): Promise<any> {
+    await prisma.user.create({
+        data:data
+    });
+}
