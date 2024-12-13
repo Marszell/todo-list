@@ -1,6 +1,8 @@
 import {PrismaClient} from "@prisma/client";
 import {NextApiRequest, NextApiResponse} from "next";
 import bcrypt from 'bcryptjs';
+import {FormState, SignUpSchema} from "../../lib/Validations";
+import {NextResponse} from "next/server";
 
 const prisma = new PrismaClient();
 
@@ -25,5 +27,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
     }else{
         res.status(405).json({status:"fail", message:"method not allowed"});
+    };
+};
+
+export async function signup(state: FormState, formData: FormData) {
+    try {
+        const validatedFields = SignUpSchema.safeParse({
+            name : formData.get('name'),
+            email : formData.get('email'),
+            password: formData.get('password'),
+        })
+        if (!validatedFields.success){
+            return {
+                errors: validatedFields.error.flatten().fieldErrors,
+            }
+        }
+        const {name, email, password} = validatedFields.data;
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const newUser = await prisma.
+    } catch (error) {
+        return NextResponse.json({status:"error", message:"server error", error: error, data:{} }, { status: 400 });
     }
 }
