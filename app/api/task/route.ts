@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import {create, fetchTask, UpdateBool} from "../../lib/TaskRepository";
 import { TodoFormSchema } from "../../lib/Validations";
 import prisma from "../../lib/prisma";
+import {auth} from "../../../auth";
+import {fetchUserbyId} from "../../lib/UserRepository";
 
 // Mengubah BigInt ke string agar dapat dikonversi menjadi JSON
 BigInt.prototype.toJSON = function() { return this.toString(); }
@@ -58,6 +60,10 @@ export async function POST(request: Request): Promise<NextResponse> {
         }
 
         // form.userId = "1";
+
+        //new
+        // const session = await auth();
+        // const user = await fetchUserbyId(session.user.id);
 
         let user = await prisma.user.findUnique({
             where: { id: "1" },
