@@ -12,6 +12,19 @@ export async function fetchUserbyEmail(email: string): Promise<any> {
     });
 }
 
+export async function fetchUserbyId(id: number): Promise<any> {
+    return prisma.user.findUnique({
+        where: {
+            id: id
+            deleted_at: null,
+        },
+        select:{
+            id:true,
+            name:true,
+        },
+    });
+}
+
 export async function create (data: any): Promise<any> {
     await prisma.user.create({
         data:data
