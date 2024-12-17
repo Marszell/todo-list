@@ -6,6 +6,8 @@ import {useActionState, useState} from "react";
 import axios from "axios";
 import {useRouter} from "next/navigation";
 import toast from "react-hot-toast";
+import {Field, Formik} from "formik";
+import * as Yup from "yup";
 
 export default function signupPage() {
     const router = useRouter();
@@ -16,7 +18,7 @@ export default function signupPage() {
             for(let key in values){
                 FormdataToSend.append(key, values[key]);
             }
-            const respon = await axios.post("/api/auth/signup",values);
+            const respon = await axios.post("/api/auth/signup",FormdataToSend);
             // console.log(respon);
             if (respon.status === 201 || respon.status === 202){
                 router.replace('/login');
@@ -24,59 +26,101 @@ export default function signupPage() {
                 console.log("Error");
             }
         }catch(error){
+            console.log(error.response);
             toast.error(error.response.data.message);
         }
     }
+    const initialValues = {
+        name: "",
+        email: "",
+        password: "",
+    };
+
+    const validationSchema = Yup.object().shape({
+        name : Yup.string().required("Please enter name"),
+        email : Yup.string().required("Please enter email"),
+        password: Yup.string().required("Please enter password"),
+    });
 
     return (
-        <div className={styles.container}>
-            <form action={sign} className={styles.form}>
-                <h1>Sign up</h1>
-                <div className={styles.name}>
-                    <span>Name</span>
-                    <input
-                        type="text"
-                        name="Name"
-                        placeholder="Name"
-                        required
-                    />
-                </div>
-                {/*{state?.errors?.name && <p>{state.errors.name}</p>}*/}
+        <Formik
+            enableReinitialize={true}
+            initialValues={initialValues}
+            onSubmit={sign}
+            validationSchema={validationSchema}
+        >
+            {({
+                handleSubmit,
+                errors,
+                touched
 
-                <div className={styles.email}>
-                    <span>Email</span>
-                    <input
-                        type="email"
-                        name="Email"
-                        placeholder="Email"
-                        required
-                    />
+            }) =>(
+                <div className={styles.container}>
+                    <form onSubmit={handleSubmit} className={styles.form}>
+                        <h1>Sign up</h1>
+                        <div className={styles.name}>
+                            <span>Name</span>
+                            <Field type="text" name="name" placeholder="Name" />
+                            {errors.name && touched.name ? (
+                                <div className="text-bg-danger border border-red-400 text-red-700 px-4 py-2 rounded relative" role="alert">
+                                    <strong className="font-bold">{errors.name}</strong>
+                                </div>
+                            ) : null}
+                            {/*<input*/}
+                            {/*    type="text"*/}
+                            {/*    name="Name"*/}
+                            {/*    placeholder="Name"*/}
+                            {/*    required*/}
+                            {/*/>*/}
+                        </div>
+                        {/*{state?.errors?.name && <p>{state.errors.name}</p>}*/}
+                        <div className={styles.email}>
+                            <span>Email</span>
+                            <Field type="email" name="email" placeholder="Email" />
+                            {errors.email && touched.email ? (
+                                <div className="text-bg-danger border border-red-400 text-red-700 px-4 py-2 rounded relative" role="alert">
+                                    <strong className="font-bold">{errors.email}</strong>
+                                </div>
+                            ) : null}
+                            {/*<input*/}
+                            {/*    type="email"*/}
+                            {/*    name="Email"*/}
+                            {/*    placeholder="Email"*/}
+                            {/*    required*/}
+                            {/*/>*/}
+                        </div>
+                        {/*{state?.errors?.email && <p>{state.errors.email}</p>}*/}
+                        <div className={styles.password}>
+                            <span>Password</span>
+                            <Field type="password" name="password" placeholder="Password" />
+                            {errors.password && touched.password ? (
+                                <div className="text-bg-danger border border-red-400 text-red-700 px-4 py-2 rounded relative" role="alert">
+                                    <strong className="font-bold">{errors.password}</strong>
+                                </div>
+                            ) : null}
+                            {/*<input*/}
+                            {/*    type="password"*/}
+                            {/*    name="Password"*/}
+                            {/*    placeholder={"Password"}*/}
+                            {/*    required*/}
+                            {/*/>*/}
+                        </div>
+                        {/*{state?.errors?.password && (*/}
+                        {/*    <div>*/}
+                        {/*        <p>Password must:</p>*/}
+                        {/*        <ul>*/}
+                        {/*            {state.errors.password.map((error) => (*/}
+                        {/*                <li key={error}>- {error}</li>*/}
+                        {/*            ))}*/}
+                        {/*        </ul>*/}
+                        {/*    </div>*/}
+                        {/*)}*/}
+                        <span>Already have account ? <Link href={"/login"}>Enter here</Link> </span>
+                        <button type="submit">Sign up</button>
+                    </form>
                 </div>
-                {/*{state?.errors?.email && <p>{state.errors.email}</p>}*/}
-
-                <div className={styles.password}>
-                    <span>Password</span>
-                    <input
-                        type="password"
-                        name="Password"
-                        placeholder={"Password"}
-                        required
-                    />
-                </div>
-                {/*{state?.errors?.password && (*/}
-                {/*    <div>*/}
-                {/*        <p>Password must:</p>*/}
-                {/*        <ul>*/}
-                {/*            {state.errors.password.map((error) => (*/}
-                {/*                <li key={error}>- {error}</li>*/}
-                {/*            ))}*/}
-                {/*        </ul>*/}
-                {/*    </div>*/}
-                {/*)}*/}
-                <span>Already have account ? <Link href={"/login"}>Enter here</Link> </span>
-                <button type="submit">Sign up</button>
-            </form>
-        </div>
+            )}
+        </Formik>
     )
 }
 
