@@ -15,7 +15,7 @@ export async function fetchUserbyEmail(email: string): Promise<any> {
 export async function fetchUserbyId(id: number): Promise<any> {
     return prisma.user.findUnique({
         where: {
-            id: id
+            id: id,
             deleted_at: null,
         },
         select:{
