@@ -1,5 +1,5 @@
 'use client'
-import styles from './signup.module.css';
+import styles from '../ui/signup/signup.module.css';
 import Link from "next/link";
 import {useActionState, useState} from "react";
 // import {signup} from "../api/auth/route";
