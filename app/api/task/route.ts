@@ -67,26 +67,8 @@ export async function POST(request: Request): Promise<NextResponse> {
         // form.userId = "1";
 
         //new
-        // const session = await auth();
-        // const user = await fetchUserbyId(session.user.id);
-
-        let user = await prisma.user.findUnique({
-            where: { id: "1" },
-        });
-
-        if (!user) {
-            user = await prisma.user.create({
-                data: {
-                    id: "1",
-                    name: "jhon", // Add other required fields
-                    email:"jhon@gmail.com",
-                    password: "jhon123",
-                },
-            });
-        }
-
-        // Membuat task baru di database
-        // await create(form);
+        const session = await auth();
+        const user = await fetchUserbyEmail(session.user.email);
 
         await create({
             ...form,
