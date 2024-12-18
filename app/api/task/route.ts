@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import {create, fetchTask, UpdateBool} from "../../lib/TaskRepository";
+import {create, fetchTask, fetchTaskbyUser, UpdateBool} from "../../lib/TaskRepository";
 import { TodoFormSchema } from "../../lib/Validations";
 import prisma from "../../lib/prisma";
 import {auth} from "../../../auth";
-import {fetchUserbyId} from "../../lib/UserRepository";
+import {fetchUserbyEmail, fetchUserbyId} from "../../lib/UserRepository";
 
 // Mengubah BigInt ke string agar dapat dikonversi menjadi JSON
 BigInt.prototype.toJSON = function() { return this.toString(); }
@@ -23,8 +23,13 @@ export async function GET(request: Request): Promise<any> {
         const url = new URL(request.url);
         const searchParams = new URLSearchParams(url.search);
         const taskParam = searchParams.get("complete");
-        const task = await fetchTask(taskParam ?? "");
-        return NextResponse.json({message:"", data: task, error:{} }, { status: 200 });
+
+        //for check user id
+        const session = await auth();
+        const user = await fetchUserbyEmail(session.user.email);
+        const userTask = await fetchTaskbyUser(user.id);
+        // const task = await fetchTask(taskParam ?? "");
+        return NextResponse.json({message:"", data: userTask, error:{} }, { status: 200 });
     }catch (error){
         return NextResponse.json({ message:error.message, data: {}, error: error }, { status: 500 });
     }

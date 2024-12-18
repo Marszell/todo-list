@@ -8,7 +8,16 @@ export async function fetchTask(): Promise<any[]> {
     })
 }
 
-export async function fetchSingleTask(id: string): Promise<any[]> {
+export async function fetchTaskbyUser(id: number): Promise<any[]> {
+    return prisma.todo.findMany({
+        where:{
+            user_id: id,
+            deleted_at: null
+        }
+    })
+}
+
+export async function fetchSingleTask(id: number): Promise<any[]> {
     return prisma.todo.findUnique({
         where:{
             id:id,
