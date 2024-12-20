@@ -31,7 +31,7 @@ export async function PUT (request: Request, {params}): Promise<NextResponse> {
 
         try {
             if(action === 'complete'){
-                const complete = formData.get("complete") === 'true';
+                const complete = formData.get("completed") === 'true';
                 // if (complete !== undefined){
                 const id = parseInt(params.id)
                 await UpdateBool(id,complete);

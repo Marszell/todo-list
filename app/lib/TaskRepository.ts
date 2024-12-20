@@ -72,7 +72,7 @@ export async function UpdateBool(id: number, complete:boolean): Promise<any> {
             id: id
         },
         data:{
-            complete:complete
+            complete:!complete
         }
     });
 }

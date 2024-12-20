@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import {fetchTask} from "../../lib/TaskRepository";
 
 export default function Task({id,title, desc, completed, date, fetchTask }) {
-    const [isClicked, setIsClicked] = useState(false);
+    const [isClicked, setIsClicked] = useState(completed);
 
     const onDelete = async (id) => {
         try {
@@ -21,9 +21,10 @@ export default function Task({id,title, desc, completed, date, fetchTask }) {
     };
     const handleClick = async () => {
         try{
+            console.log(completed);
             const formData = new FormData();
             formData.append("action", "complete");
-            formData.append("completed", !isClicked);
+            formData.append("completed", isClicked);
             await axios.put(`/api/task/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -55,10 +56,11 @@ export default function Task({id,title, desc, completed, date, fetchTask }) {
             </div>
             <div className={styles.buttons}>
                 <button
-                    className={`${styles.button} ${isClicked ? styles.complete : styles.mark}`}
+                    className={`${styles.button} ${isClicked ? styles.complete : styles.incomplete}`}
                     onClick={handleClick}
                 >
                     {isClicked ? 'Complete' : 'Incomplete'}
+                    {/*{isClicked ? 'Complete' : 'Incomplete'}*/}
                 </button>
                 <Link href={`/task/${id}`}>
                     <button className={`${styles.button} ${styles.view}`}>View</button>
