@@ -1,17 +1,23 @@
 "use client"
-import {useEffect, useState} from 'react';
+import { useState } from 'react';
 import styles from "../../ui/dashboard/task/task.module.css";
 import Link from "next/link";
 import axios from "axios";
 import toast from "react-hot-toast";
-import {fetchTask} from "../../lib/TaskRepository";
 
-export default function Task({id,title, desc, completed, date, fetchTask }) {
+interface Props {
+    id: number;
+    title: string;
+    desc: string;
+    completed: boolean;
+    date: string;
+    fetchTask:()=>void;
+}
+export default function Task({ id,title, desc, completed, date, fetchTask }:Props) {
     const [isClicked, setIsClicked] = useState(completed);
 
-    const onDelete = async (id) => {
+    const onDelete = async (id:number) => {
         try {
-            // console.log(id);
             await axios.delete(`/api/task/${id}`);
             toast.success("Task deleted successfully");
             fetchTask();
@@ -30,14 +36,9 @@ export default function Task({id,title, desc, completed, date, fetchTask }) {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            // await axios.put(`/api/task/${id}`, {
-            //     action:'complete',
-            //     completed:!isClicked,
-            // });
             setIsClicked(!isClicked);
             toast.success("Task Status updated successfully");
             fetchTask();
-            // setIsClicked(!isClicked);
         }catch (error){
             toast.error("Error updated status task");
         }
@@ -60,7 +61,6 @@ export default function Task({id,title, desc, completed, date, fetchTask }) {
                     onClick={handleClick}
                 >
                     {isClicked ? 'Complete' : 'Incomplete'}
-                    {/*{isClicked ? 'Complete' : 'Incomplete'}*/}
                 </button>
                 <Link href={`/task/${id}`}>
                     <button className={`${styles.button} ${styles.view}`}>View</button>

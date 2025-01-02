@@ -22,14 +22,12 @@ export default function SingleTaskPage (){
     const fetchTask = async () => {
         if (!id) return;
         try {
-            // console.log(`Fetching task with ID: ${id}`);
             const data  = await axios.get(`/api/task/${id}`);
             const taskData = data.data.data;
             setFormData({
                 title: taskData.title,
                 description: taskData.description,
             });
-            console.log("abc")
         } catch (error) {
             console.error("Error fetching task:", error);
             toast.error("Error fetching task");
