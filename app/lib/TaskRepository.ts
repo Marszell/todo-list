@@ -17,12 +17,12 @@ export async function fetchTaskbyUser(id: number): Promise<any[]> {
     })
 }
 
-export async function fetchSingleTask(id: number): Promise<any[]> {
+export async function fetchSingleTask(id: number): Promise<any> {
     return prisma.todo.findUnique({
         where:{
             id:id,
-            deleted_at: null
-        }
+            deleted_at: null,
+        },
     });
 }
 
@@ -41,13 +41,13 @@ export async function update(id: number, data:any): Promise<any> {
     });
 }
 
-export async function updated(id: number): Promise<any> {
-    return prisma.todo.update({
-        where:{
-            id: id
-        },
-    });
-}
+// export async function updated(id: number): Promise<any> {
+//     return prisma.todo.update({
+//         where:{
+//             id: id
+//         },
+//     });
+// }
 
 export async function fetchTaskByBool(complete: boolean): Promise<any> {
     return prisma.todo.findMany({
