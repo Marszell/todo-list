@@ -1,9 +1,10 @@
 import {NextResponse} from "next/server";
-import {fetchSingleTask, fetchTask, update, deleteTask, UpdateBool} from "../../../lib/TaskRepository";
+import {fetchSingleTask, update, deleteTask, UpdateBool} from "../../../lib/TaskRepository";
 import {TodoFormSchema} from "../../../lib/Validations";
-import prisma from "../../../lib/prisma";
+import {auth} from "../../../../auth";
+import {fetchUserbyEmail} from "../../../lib/UserRepository";
 
-export async function DELETE (request: Request, {params}): Promise<NextResponse> {
+export async function DELETE (request: Request, { params }: { params:{ id:string } }): Promise<NextResponse> {
     try{
         const id = parseInt(params.id)
         await deleteTask(id)
@@ -13,7 +14,7 @@ export async function DELETE (request: Request, {params}): Promise<NextResponse>
     }
 }
 
-export async function GET (request: Request, {params}): Promise<NextResponse> {
+export async function GET (request: Request, { params }: { params:{ id: string } }): Promise<NextResponse> {
     try{
         const id = parseInt(params.id)
         const task = await fetchSingleTask(id)
@@ -24,7 +25,7 @@ export async function GET (request: Request, {params}): Promise<NextResponse> {
 }
 
 const UpdateTask = TodoFormSchema.omit({title: true})
-export async function PUT (request: Request, {params}): Promise<NextResponse> {
+export async function PUT (request: Request, { params }: { params:{ id: string } }): Promise<NextResponse> {
     try{
         const formData = await request.formData();
         const action = formData.get("action");
@@ -32,16 +33,13 @@ export async function PUT (request: Request, {params}): Promise<NextResponse> {
         try {
             if(action === 'complete'){
                 const complete = formData.get("completed") === 'true';
-                // if (complete !== undefined){
                 const id = parseInt(params.id)
                 await UpdateBool(id,complete);
                 return NextResponse.json({message:"Success", data: {}, error:{} }, { status: 200 });
-                // }
             }
         } catch (error) {
             return NextResponse.json({ message: error.message, data: {}, error: error }, { status: 500 });
         }
-
 
         const validatedFormData = UpdateTask.safeParse({
             id: parseInt(params['id']),
@@ -64,21 +62,12 @@ export async function PUT (request: Request, {params}): Promise<NextResponse> {
             }
         }
 
-        let user = await prisma.user.findUnique({
-            where: { id: "1" },
-        });
-
-        if (!user) {
-            user = await prisma.user.create({
-                data: {
-                    id: "1",
-                    name: "jhon", // Add other required fields
-                    email:"jhon@gmail.com",
-                    password: "jhon123",
-                },
-            });
+        //new
+        const session = await auth();
+        if (!session || !session.user) {
+            return NextResponse.json({ message: "Unauthorized", data: {}, error: {} }, { status: 401 });
         }
-
+        const user = await fetchUserbyEmail(session.user.email);
         await update(id,{
             ...form,
             users:{
