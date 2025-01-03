@@ -46,10 +46,6 @@ export default function LoginPage(){
                     required
                 />
                 <span>Didn't have account ? <Link href={"/signup"}>Enter here</Link> </span>
-                {/*<Link href={"/signup"}>*/}
-                {/*    <span>Already have account ? Enter here </span>*/}
-                {/*    /!*<button>Sign Up</button>*!/*/}
-                {/*</Link>*/}
                 <button>Login</button>
             </form>
         </div>
