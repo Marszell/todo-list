@@ -1,11 +1,9 @@
 'use client'
 import styles from '../ui/signup/signup.module.css';
 import Link from "next/link";
-import {useActionState, useState} from "react";
-// import {signup} from "../api/auth/route";
 import axios from "axios";
 import {useRouter} from "next/navigation";
-import toast from "react-hot-toast";
+import toast, {Toaster} from "react-hot-toast";
 import {Field, Formik} from "formik";
 import * as Yup from "yup";
 
@@ -22,8 +20,10 @@ export default function signupPage() {
             // console.log(respon);
             if (respon.status === 201 || respon.status === 202){
                 router.replace('/login');
+                toast.success("Create Successfully");
             } else {
                 console.log("Error");
+                toast.error("Faill");
             }
         }catch(error){
             console.log(error.response);
@@ -56,6 +56,7 @@ export default function signupPage() {
 
             }) =>(
                 <div className={styles.container}>
+                    <Toaster position={"bottom-left"}/>
                     <form onSubmit={handleSubmit} className={styles.form}>
                         <h1>Sign up</h1>
                         <div className={styles.name}>

@@ -9,10 +9,6 @@ import {authenticate} from "../lib/Actions";
 import {useActionState} from "react";
 
 export default function LoginPage(){
-    // const [errorMessage, formAction, isPending] = useActionState(
-    //     authenticate,
-    //     undefined,
-    // );
     const router = useRouter();
 
     const login = async (values) => {
@@ -20,8 +16,8 @@ export default function LoginPage(){
             const response = await axios.post("/api/auth/login", values);
             console.log(response);
             if (response.status === 201 || response.status === 200) {
-                console.log('test');
                 router.replace('/');
+                toast.success("Login successfully");
             }
         }catch(error){
             toast.error(error.response.data.message);
