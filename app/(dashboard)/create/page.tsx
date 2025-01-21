@@ -7,14 +7,19 @@ import toast from "react-hot-toast";
 import * as Yup from "yup";
 import {navigate} from "./action";
 
+interface Formvalues {
+    title: string;
+    description: string;
+}
+
 export default function Create() {
     // const [formData, setFormData] = useState({});
 
-    const onSubmit = async (values) => {
+    const onSubmit = async (values: Formvalues) => {
         try {
             const formDataToSend = new FormData();
             for (let key in values) {
-                formDataToSend.append(key,values[key]);
+                formDataToSend.append(key,values[key as keyof Formvalues]);
             }
             let response = await axios.post("/api/task/", formDataToSend);
 
@@ -25,7 +30,8 @@ export default function Create() {
                 toast.error("Error")
             }
         } catch (error) {
-            toast.error(error.response.data.message)
+            // toast.error(error.response.data.message)
+            toast.error("Error")
         }
     };
 

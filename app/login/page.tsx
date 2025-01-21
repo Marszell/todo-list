@@ -8,10 +8,15 @@ import Link from "next/link";
 import {authenticate} from "../lib/Actions";
 import {useActionState} from "react";
 
+interface FormData {
+    email: string;
+    password: string;
+}
+
 export default function LoginPage(){
     const router = useRouter();
 
-    const login = async (values) => {
+    const login = async (values : FormData) => {
         try {
             const response = await axios.post("/api/auth/login", values);
             console.log(response);
@@ -20,7 +25,8 @@ export default function LoginPage(){
                 toast.success("Login successfully");
             }
         }catch(error){
-            toast.error(error.response.data.message);
+            // toast.error(error.response.data.message);
+            toast.error("Login Error")
         }
     }
 
@@ -45,5 +51,5 @@ export default function LoginPage(){
                 <button>Login</button>
             </form>
         </div>
-    )
+    );
 }

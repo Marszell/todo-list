@@ -6,7 +6,6 @@ import { fetchUserbyEmail } from "../../lib/UserRepository";
 
 BigInt.prototype.toJSON = function() { return this.toString(); }
 
-
 export async function GET(request: Request): Promise<any> {
     try{
         const url = new URL(request.url);

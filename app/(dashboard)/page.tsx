@@ -36,7 +36,7 @@ export default function Dashboard() {
             </div>
             <div className={styles.task}>
                 {tasks.map((task) => {
-                    const date = new Date(task.updated_at).toLocaleDateString('en-US', { timezone: 'Asia/Jakarta' });
+                    const date = new Date(task.updated_at).toLocaleDateString('en-US', { timeZone: 'Asia/Jakarta' });
                     return (
                         <Task
                             key={task.id}

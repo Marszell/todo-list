@@ -7,14 +7,20 @@ import toast, {Toaster} from "react-hot-toast";
 import {Field, Formik} from "formik";
 import * as Yup from "yup";
 
+interface FormData {
+    name: string;
+    email: string;
+    password: string;
+}
+
 export default function signupPage() {
     const router = useRouter();
     // const [state, action, pending] = useActionState(signup, undefined);
-    const sign = async (values) => {
+    const sign = async (values : FormData) => {
         try {
             const FormdataToSend = new FormData();
             for(let key in values){
-                FormdataToSend.append(key, values[key]);
+                FormdataToSend.append(key, values[key as keyof FormData]);
             }
             const respon = await axios.post("/api/auth/signup",FormdataToSend);
             // console.log(respon);
@@ -52,7 +58,7 @@ export default function signupPage() {
             {({
                 handleSubmit,
                 errors,
-                touched
+                touched,
 
             }) =>(
                 <div className={styles.container}>

@@ -3,7 +3,13 @@ import {create, fetchUserbyEmail} from "../../../lib/UserRepository";
 import {NextResponse} from "next/server";
 import bcrypt from "bcrypt";
 
-BigInt.prototype.toJSON = function() { return this.toString(); }
+declare global {
+    interface BigInt {
+        toJSON: () => string;
+    }
+}
+
+BigInt.prototype.toJSON = function() { return this.toString(); };
 
 export async function POST(request: Request):Promise<NextResponse> {
     try {
@@ -20,6 +26,7 @@ export async function POST(request: Request):Promise<NextResponse> {
                 { message: "Validation Error", errors: validatedFields.error.flatten().fieldErrors },
                 { status: 400 });
         }
+
         const { name, email, password } = validatedFields.data;
         const existingUser = await fetchUserbyEmail(email);
         if (existingUser) {
