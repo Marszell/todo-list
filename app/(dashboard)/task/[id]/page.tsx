@@ -10,9 +10,14 @@ import {useEffect, useState} from "react";
 import {useParams} from "next/navigation";
 import {useRouter} from "next/compat/router";
 
+interface FormData {
+    title: string;
+    description: string;
+}
+
 export default function SingleTaskPage (){
     const {id} = useParams();
-    const [formData, setFormData] = useState({})
+    const [formData, setFormData] = useState<FormData>({title:"",description:"",});
     const router = useRouter();
 
     useEffect(() => {
@@ -33,11 +38,11 @@ export default function SingleTaskPage (){
             toast.error("Error fetching task");
         }
     };
-    const onSubmit = async(values)=>{
+    const onSubmit = async(values: FormData)=>{
         try{
         const formData = new FormData();
         for (let key in values){
-            formData.append(key, values[key]);
+            formData.append(key, values[key as keyof FormData]);
         }
         let response = await axios.put(`/api/task/${id}`, formData);
         if (response.status === 201 || response.status === 200) {
@@ -47,7 +52,8 @@ export default function SingleTaskPage (){
             toast.error("Error")
         }
         }catch (error){
-            toast.error(error.response.data.message);
+            // toast.error(error.response.data.message);
+            toast.error("An unexpected error occurred");
         }
     }
 

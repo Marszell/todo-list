@@ -8,9 +8,9 @@
 //     matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
 // };
 
-import { NextResponse } from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 
-export default async function middleware(req) {
+export default async function middleware(req: NextRequest) {
     const url = req.nextUrl.clone();
     const session = await fetch("/api/auth/session").then((res) => res.json());
 
