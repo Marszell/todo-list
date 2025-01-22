@@ -32,8 +32,9 @@ export default function signupPage() {
                 toast.error("Faill");
             }
         }catch(error){
-            console.log(error.response);
-            toast.error(error.response.data.message);
+            // console.log(error.response);
+            // toast.error(error.response.data.message);
+            toast.error("Failed to register");
         }
     }
     const initialValues = {
