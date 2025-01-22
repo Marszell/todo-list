@@ -4,6 +4,7 @@ import styles from "../../ui/dashboard/task/task.module.css";
 import Link from "next/link";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation"; // Use router for refreshing data
 
 interface Props {
     id: number;
@@ -11,36 +12,37 @@ interface Props {
     desc: string;
     completed: boolean;
     date: string;
-    fetchTask:()=>void;
 }
-export default function Task({ id,title, desc, completed, date, fetchTask }:Props) {
+export default function Task({ id, title, desc, completed, date }: Props) {
     const [isClicked, setIsClicked] = useState(completed);
+    const router = useRouter(); // Use router to refresh the page or fetch new data
 
-    const onDelete = async (id:number) => {
+    const onDelete = async (id: number) => {
         try {
             await axios.delete(`/api/task/${id}`);
             toast.success("Task deleted successfully");
-            fetchTask();
+            router.refresh(); // Refresh the data
         } catch (error) {
             toast.error("Error deleting task");
         }
     };
+
     const handleClick = async () => {
-        try{
+        try {
             console.log(completed);
             const formData = new FormData();
             formData.append("action", "complete");
-            formData.append("completed", isClicked);
+            formData.append("completed", isClicked.toString()); // Convert boolean to string
             await axios.put(`/api/task/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
             setIsClicked(!isClicked);
-            toast.success("Task Status updated successfully");
-            fetchTask();
-        }catch (error){
-            toast.error("Error updated status task");
+            toast.success("Task status updated successfully");
+            router.refresh(); // Refresh the data
+        } catch (error) {
+            toast.error("Error updating task status");
         }
     };
 

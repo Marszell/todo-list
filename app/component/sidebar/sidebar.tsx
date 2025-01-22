@@ -9,6 +9,8 @@ import MenuLink from "./menuLink/menuLink"
 import Image from "next/image";
 import {auth, signOut} from "../../../auth";
 import {fetchUserbyEmail} from "../../lib/UserRepository";
+import {Session} from "next-auth";
+import {NextResponse} from "next/server";
 
 const menuItems = [
     {
@@ -34,8 +36,17 @@ const menuItems = [
 ];
 
 export default async function  Sidebar(){
-    const session = await auth();
-    const user = await fetchUserbyEmail(session.user.email);
+    const session: Session|null = await auth();
+    if (!session || !session.user) {
+        return "error"
+        // return NextResponse.json({ message: "Unauthorized", data: {}, error: {} }, { status: 401 });
+    }
+    const userEmail = session.user.email;
+    if (!userEmail) {
+        return "error"
+        // return NextResponse.json({ message: "Invalid email", data: {}, error: {} }, { status: 400 });
+    }
+    const user = await fetchUserbyEmail(userEmail);
 
     return(
         <div className={styles.container}>

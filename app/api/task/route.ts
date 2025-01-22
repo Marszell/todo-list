@@ -3,8 +3,16 @@ import { create, fetchTaskbyUser } from "../../lib/TaskRepository";
 import { TodoFormSchema } from "../../lib/Validations";
 import { auth } from "../../../auth";
 import { fetchUserbyEmail } from "../../lib/UserRepository";
+import {Session} from "next-auth";
 
 BigInt.prototype.toJSON = function() { return this.toString(); }
+
+function handleError(error: unknown) {
+    if (error instanceof Error) {
+        return error.message;
+    }
+    return "An unknown error occurred";
+}
 
 export async function GET(request: Request): Promise<any> {
     try{
@@ -12,12 +20,19 @@ export async function GET(request: Request): Promise<any> {
         const searchParams = new URLSearchParams(url.search);
         const taskParam = searchParams.get("complete");
 
-        const session = await auth();
-        const user = await fetchUserbyEmail(session.user.email);
+        const session: Session | null = await auth();
+        if (!session || !session.user) {
+            return NextResponse.json({ message: "Unauthorized", data: {}, error: {} }, { status: 401 });
+        }
+        const email = session.user.email;
+        if (!email){
+            return NextResponse.json({ message: "Invalid email", data: {}, error: {} }, { status: 400 });
+        }
+        const user = await fetchUserbyEmail(email);
         const userTask = await fetchTaskbyUser(user.id);
         return NextResponse.json({message:"", data: userTask, error:{} }, { status: 200 });
     }catch (error){
-        return NextResponse.json({ message:error.message, data: {}, error: error }, { status: 500 });
+        return NextResponse.json({ message:handleError(error), data: {}, error: error }, { status: 500 });
     }
 }
 
@@ -50,9 +65,15 @@ export async function POST(request: Request): Promise<NextResponse> {
 
 
         //new
-        const session = await auth();
-        const user = await fetchUserbyEmail(session.user.email);
-
+        const session: Session|null = await auth();
+        if (!session || !session.user) {
+            return NextResponse.json({ message: "Unauthorized", data: {}, error: {} }, { status: 401 });
+        }
+        const email = session.user.email;
+        if (!email){
+            return NextResponse.json({ message: "Invalid email", data: {}, error: {} }, { status: 400 });
+        }
+        const user = await fetchUserbyEmail(email);
         await create({
             ...form,
             users: {
