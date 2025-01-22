@@ -11,9 +11,11 @@ export async function POST(request: Request): Promise<NextResponse> {
         if (error instanceof AuthError) {
             return NextResponse.json({ message: "Invalid Credentials", data: {}, error: error }, { status: 400 });
         }
-        if (error.message === "NEXT_REDIRECT") {
+        if (typeof error === "object" && error !== null && "message" in error && error.message === "NEXT_REDIRECT") {
             return NextResponse.json({ message: "Success", data: {}, error: {} }, { status: 200 });
         }
-        return NextResponse.json({ message: "", data: {}, error: error }, { status: 500 });
+        // Handle unexpected errors
+        const errorMessage = typeof error === "object" && error !== null && "message" in error ? (error.message as string) : "An unknown error occurred";
+        return NextResponse.json({ message: errorMessage, data: {}, error }, { status: 500 });
     }
 }
