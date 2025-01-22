@@ -8,10 +8,10 @@ import Link from "next/link";
 import {authenticate} from "../lib/Actions";
 import {useActionState} from "react";
 
-interface FormData {
-    email: string;
-    password: string;
-}
+// interface FormData {
+//     email: string;
+//     password: string;
+// }
 
 export default function LoginPage(){
     const router = useRouter();
