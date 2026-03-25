@@ -1,6 +1,7 @@
 "use client"
 
-import styles from "/app/ui/dashboard/create/create.module.css";
+import styles from '../../ui/dashboard/create/create.module.css';
+// import styles from "/app/ui/dashboard/create/create.module.css";
 import { Field, Formik } from "formik";
 import axios from "axios";
 import toast from "react-hot-toast";
