@@ -7,15 +7,13 @@ export const authConfig = {
     callbacks: {
         authorized ({ auth, request: { nextUrl } }) {
             const isLoggedIn = !!auth?.user;
-            const isOnDashboard = nextUrl.pathname.startsWith('/');
-            if (isOnDashboard) {
-                if (isLoggedIn) return true;
-                return false; // Redirect unauthenticated users to login page
-            } else if (isLoggedIn) {
-                // return Response.redirect(new URL('/', nextUrl));
-                return true;
-            }
-            return true;
+            const publicPaths = ['/login', '/signup'];
+            const isPublic = publicPaths.some(p => nextUrl.pathname.startsWith(p));
+
+            if (isPublic) return true;
+            if (isLoggedIn) return true;
+
+            return Response.redirect(new URL('/login', nextUrl));
         },
     },
     providers: [], // Add providers with an empty array for now
