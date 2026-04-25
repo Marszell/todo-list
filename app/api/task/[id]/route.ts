@@ -12,9 +12,10 @@ function handleError(error: unknown) {
     return "An unknown error occurred";
 }
 
-export async function DELETE (request: Request, { params }: { params:{ id:string } }): Promise<NextResponse> {
+export async function DELETE (request: Request, { params }: { params: Promise<{ id: string }> }): Promise<NextResponse> {
     try{
-        const id = parseInt(params.id)
+        const { id: idStr } = await params;
+        const id = parseInt(idStr)
         await deleteTask(id)
         return NextResponse.json({ message: "Success", data: {}, error: {} }, { status: 200 });
     } catch (error){
@@ -22,9 +23,10 @@ export async function DELETE (request: Request, { params }: { params:{ id:string
     }
 }
 
-export async function GET (request: Request, { params }: { params:{ id: string } }): Promise<NextResponse> {
+export async function GET (request: Request, { params }: { params: Promise<{ id: string }> }): Promise<NextResponse> {
     try{
-        const id = parseInt(params.id)
+        const { id: idStr } = await params;
+        const id = parseInt(idStr)
         const task = await fetchSingleTask(id)
         return NextResponse.json({message:"Success", data: task, error:{} }, { status: 200 });
     }catch(error){
@@ -33,15 +35,16 @@ export async function GET (request: Request, { params }: { params:{ id: string }
 }
 
 const UpdateTask = TodoFormSchema.omit({title: true})
-export async function PUT (request: Request, { params }: { params:{ id: string } }): Promise<NextResponse> {
+export async function PUT (request: Request, { params }: { params: Promise<{ id: string }> }): Promise<NextResponse> {
     try{
+        const { id: idStr } = await params;
         const formData = await request.formData();
         const action = formData.get("action");
 
         try {
             if(action === 'complete'){
                 const complete = formData.get("completed") === 'true';
-                const id = parseInt(params.id)
+                const id = parseInt(idStr)
                 await UpdateBool(id,complete);
                 return NextResponse.json({message:"Success", data: {}, error:{} }, { status: 200 });
             }
@@ -50,7 +53,7 @@ export async function PUT (request: Request, { params }: { params:{ id: string }
         }
 
         const validatedFormData = UpdateTask.safeParse({
-            id: parseInt(params['id']),
+            id: parseInt(idStr),
             title: formData.get("title"),
         })
 
@@ -62,7 +65,7 @@ export async function PUT (request: Request, { params }: { params:{ id: string }
             }, { status: 400 });
         }
 
-        const id = parseInt(params.id)
+        const id = parseInt(idStr)
         const form: Record<string, any> = {};
         for(const [key, value] of formData.entries() as Iterable<[string,FormDataEntryValue]>) {
             if (key !== "file") {

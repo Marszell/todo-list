@@ -1,61 +1,19 @@
-import {PrismaClient} from "@prisma/client";
-import {NextApiRequest, NextApiResponse} from "next";
+import { PrismaClient } from "@prisma/client";
+import { NextResponse } from "next/server";
 import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    if (req.method === "POST") {
-        const {email , password} = req.body;
-        try {
-            const user = await prisma.user.findUnique({
-                where: { email }
-            })
-            if (user && bcrypt.compareSync(password, user.password)) {
-                res.status(200).json({
-                    status:"success",
-                    message:'login success',
-                    name: user.name,
-                });
-            }else{
-                res.status(401).json({ status:"fail", message: "Invalid Credentials" });
-            }
-        }catch(error){
-            res.status(500).json({status:"error", message:"server error"});
+export async function POST(req: Request) {
+    try {
+        const { email, password } = await req.json();
+        const user = await prisma.user.findUnique({ where: { email } });
+
+        if (user && bcrypt.compareSync(password, user.password)) {
+            return NextResponse.json({ status: "success", message: "login success", name: user.name });
         }
-    }else{
-        res.status(405).json({status:"fail", message:"method not allowed"});
+        return NextResponse.json({ status: "fail", message: "Invalid Credentials" }, { status: 401 });
+    } catch (error) {
+        return NextResponse.json({ status: "error", message: "server error" }, { status: 500 });
     }
-};
-
-
-// export async function POST (req: Request, res: NextApiResponse) {
-//     try{
-//         const body = await req.json();
-//         const {email, password} = body;
-//
-//         const user = await prisma.user.findUnique({
-//             where: {email}
-//         });
-//
-//         if (user && bcrypt.compareSync(password, user.password)) {
-//             res.status(200).json({
-//                 status:"Success",
-//                 message:"Login successfully",
-//                 name:user.name,
-//             });
-//         } else {
-//             res.status(401).json({ status:"fail", message: "Invalid Credentials" })
-//         }
-//     } catch (error) {
-//         res.status(500).json({status:"error", message:"server error"});
-//     }
-// }
-// export function OPTIONS() {
-//     return new Response(null, {
-//         status: 200,
-//         headers: {
-//             "Allow": "POST, OPTIONS",
-//         },
-//     });
-// }
+}

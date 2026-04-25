@@ -41,7 +41,7 @@ export async function POST(request: Request):Promise<NextResponse> {
         });
 
         return NextResponse.json({message:"Success", data:{}, error: {} }, { status: 201 });
-    } catch(error:any) {
+    } catch(error) {
         return NextResponse.json({message: "Internal Server", data: {}, error: error}, { status: 500 });
     }
 }
